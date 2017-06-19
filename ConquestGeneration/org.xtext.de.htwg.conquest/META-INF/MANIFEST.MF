@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.de.htwg.conquest
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.de.htwg.conquest; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.xtext.de.htwg.conquest.impl,
+ org.xtext.de.htwg.validation,
+ org.xtext.de.htwg.conquest.util,
+ org.xtext.de.htwg.scoping,
+ org.xtext.de.htwg.generator,
+ org.xtext.de.htwg.parser.antlr,
+ org.xtext.de.htwg.conquest,
+ org.xtext.de.htwg.parser.antlr.internal,
+ org.xtext.de.htwg,
+ org.xtext.de.htwg.services,
+ org.xtext.de.htwg.serializer
+Import-Package: org.apache.log4j

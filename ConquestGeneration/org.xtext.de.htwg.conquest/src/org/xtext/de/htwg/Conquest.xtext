@@ -1,0 +1,9 @@
+grammar org.xtext.de.htwg.Conquest with org.eclipse.xtext.common.Terminals
+
+generate conquest "http://www.xtext.org/de/htwg/Conquest"
+
+Game:
+	field=Field;
+	
+Field:
+	'size' name=ID '!';
