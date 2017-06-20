@@ -7,10 +7,6 @@ Conquest:
 	'players' playerList = PlayerList
 	'colors' colorList = ColorList
 ;
-
-CellList:
-	'{' (cells += Cell)+ '}'
-;
 	
 PlayerList:
 	'{' (players += Player)+ '}'
@@ -25,13 +21,6 @@ Player:
 	'cells' cells = INT
 ;
 
-Cell:
-	'color' color = Color
-	'owner' owner = STRING
-	'x' x = INT
-	'y' y = INT
-;
-
-Color:
-	'BLACK' | 'WHITE' | 'GREEN' | 'YELLOW' | 'BLUE' | 'RED' | 'MAGENTA'
+enum Color:
+	RED | BLUE | GREEN | YELLOW | MAGENTA | CYAN | ORANGE | PINK
 ;
