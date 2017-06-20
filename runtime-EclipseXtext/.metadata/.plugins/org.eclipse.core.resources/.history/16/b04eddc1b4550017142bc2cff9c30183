@@ -1,0 +1,7 @@
+fieldsize 15
+players{
+	name"Spieler1"cells{
+		"GREEN" 
+	}
+	
+}

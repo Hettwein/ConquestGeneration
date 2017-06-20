@@ -1,0 +1,12 @@
+fieldsize 15
+players {
+	name "Spieler1" cells 0
+	name "Spieler2" cells 0
+}
+colors {
+	RED
+	GREEN
+	BLUE
+	YELLOW
+	MAGENTA
+}
