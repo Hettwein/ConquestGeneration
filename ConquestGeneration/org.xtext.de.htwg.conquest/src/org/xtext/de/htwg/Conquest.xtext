@@ -2,8 +2,36 @@ grammar org.xtext.de.htwg.Conquest with org.eclipse.xtext.common.Terminals
 
 generate conquest "http://www.xtext.org/de/htwg/Conquest"
 
-Game:
-	field=Field;
+Conquest:
+	'fieldsize' fieldsize = INT
+	'players' playerList = PlayerList
+	'colors' colorList = ColorList
+;
+
+CellList:
+	'{' (cells += Cell)+ '}'
+;
 	
-Field:
-	'size' name=ID '!';
+PlayerList:
+	'{' (players += Player)+ '}'
+;
+	
+ColorList:
+	'{' (colors += Color)+ '}'
+;
+
+Player:
+	'name' name = STRING
+	'cells' cells = INT
+;
+
+Cell:
+	'color' color = Color
+	'owner' owner = STRING
+	'x' x = INT
+	'y' y = INT
+;
+
+Color:
+	'BLACK' | 'WHITE' | 'GREEN' | 'YELLOW' | 'BLUE' | 'RED' | 'MAGENTA'
+;

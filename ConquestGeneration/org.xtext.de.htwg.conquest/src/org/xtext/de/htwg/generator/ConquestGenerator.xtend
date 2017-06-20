@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.de.htwg.conquest.Conquest
+import org.xtext.de.htwg.conquest.PlayerList
 
 /**
  * Generates code from your model files on save.
@@ -14,12 +16,17 @@ import org.eclipse.xtext.generator.IGeneratorContext
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class ConquestGenerator extends AbstractGenerator {
+	
+	override doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		val conquest = resource.contents.head as Conquest
+		val pList = createPlayerListTxt(conquest.playerList)
+		fsa.generateFile("PlayerTest.txt", pList)
 	}
+
+	def createPlayerListTxt(PlayerList playerList) '''
+		«FOR player : playerList.players»
+			test spieler «player.name» hat «player.cells» Feld(er)
+		«ENDFOR»
+	'''
 }
