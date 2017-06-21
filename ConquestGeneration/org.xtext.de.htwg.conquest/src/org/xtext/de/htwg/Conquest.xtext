@@ -6,6 +6,7 @@ Conquest:
 	'fieldsize' fieldsize = INT
 	'players' playerList = PlayerList
 	'colors' colorList = ColorList
+	'classes' classesList = ClassesList
 ;
 	
 PlayerList:
@@ -24,3 +25,15 @@ Player:
 enum Color:
 	RED | BLUE | GREEN | YELLOW | MAGENTA | CYAN | ORANGE | PINK
 ;
+
+ClassesList: 
+	'{' (classes += Class)+ '}'
+;
+
+Class:
+	'className' className = STRING
+	'classPath' classPath = STRING
+	'interfaceName' interfaceName = STRING
+	'interfacePath' interfacePath = STRING
+;
+

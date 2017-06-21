@@ -7,8 +7,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.xtext.de.htwg.conquest.Conquest
+import org.xtext.de.htwg.conquest.ClassesList
 import org.xtext.de.htwg.conquest.ColorList
+import org.xtext.de.htwg.conquest.Conquest
 
 /**
  * Generates code from your model files on save.
@@ -21,8 +22,36 @@ class ConquestGenerator extends AbstractGenerator {
 
 		val conquest = resource.contents.head as Conquest
 		val colors = createColorUtil(conquest.colorList)
+		val conquestmod = createConquestModule(conquest.classesList)
+		
 		fsa.generateFile("ColorUtil.java", colors)
+		fsa.generateFile("ConquestModule.java", conquestmod)
 	}
+	
+	
+	
+	def createConquestModule(ClassesList classesList)'''
+	
+		package de.htwg.conquest;
+		
+		import com.google.inject.AbstractModule;
+		import com.google.inject.Singleton;
+		
+		«FOR Class : classesList.classes SEPARATOR ", "»
+			import «Class.interfacePath»
+		«ENDFOR»
+	
+		pubic class ConquestModule extends AbstractModule {
+			
+			@Override
+			protected void configure(){
+				«FOR Class : classesList.classes SEPARATOR ", "»
+					bind(«Class.interfaceName»).to(«Class.classPath»).in(Singleton.class);
+				«ENDFOR»
+			}
+		}
+	
+	'''
 	
 	def createColorUtil(ColorList colorList) '''
 		package de.htwg.conquest.util;
@@ -62,5 +91,7 @@ class ConquestGenerator extends AbstractGenerator {
 			}
 		}
 	'''
+	
+
 }
 
