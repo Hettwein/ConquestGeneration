@@ -3,24 +3,57 @@ grammar org.xtext.de.htwg.Conquest with org.eclipse.xtext.common.Terminals
 generate conquest "http://www.xtext.org/de/htwg/Conquest"
 
 Conquest:
-	'fieldsize' fieldsize = INT
-	'players' playerList = PlayerList
 	'colors' colorList = ColorList
+	'entities' entityList = EntityList
 ;
 	
-PlayerList:
-	'{' (players += Player)+ '}'
+EntityList:
+	'{' (entities += Entity)+ '}'
+;
+	
+Entity:
+	'name' name = STRING
+	'package' package = STRING
+	'imports' '{' (imports += STRING)* '}'
+	'hasInterface' hasInterface = BOOLEAN
+	'contructor' constructor = Constructor
+	'fields' fieldList = FieldList
+	'methods' methodList = MethodList
+;
+
+Constructor:
+	'args' args += STRING*
+	'body' body += STRING+
+;	
+
+FieldList:
+	'{' (fields += Field)+ '}'
+;
+
+Field:
+	'name' name = STRING
+	'type' type = STRING
+;
+	
+MethodList:
+	'{' (methods += Method)+ '}'
+;
+	
+Method:
+	'name' name = STRING
+	'type' type = STRING
+	'args' args += STRING*
+	'body' body += STRING*
 ;
 	
 ColorList:
 	'{' (colors += Color)+ '}'
 ;
 
-Player:
-	'name' name = STRING
-	'cells' cells = INT
-;
-
 enum Color:
 	RED | BLUE | GREEN | YELLOW | MAGENTA | CYAN | ORANGE | PINK
+;
+
+terminal BOOLEAN:
+	'true' | 'false'
 ;
