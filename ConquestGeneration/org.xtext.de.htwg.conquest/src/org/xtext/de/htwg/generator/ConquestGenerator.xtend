@@ -10,6 +10,8 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.de.htwg.conquest.ClassesList
 import org.xtext.de.htwg.conquest.ColorList
 import org.xtext.de.htwg.conquest.Conquest
+import org.xtext.de.htwg.conquest.Entity
+
 
 /**
  * Generates code from your model files on save.
@@ -17,7 +19,7 @@ import org.xtext.de.htwg.conquest.Conquest
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class ConquestGenerator extends AbstractGenerator {
-	
+
 	override doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
 		val conquest = resource.contents.head as Conquest
@@ -26,9 +28,8 @@ class ConquestGenerator extends AbstractGenerator {
 		
 		fsa.generateFile("ColorUtil.java", colors)
 		fsa.generateFile("ConquestModule.java", conquestmod)
+		conquest.entityList.entities.forEach[element | generateEntity(element, fsa)]
 	}
-	
-	
 	
 	def createConquestModule(ClassesList classesList)'''
 	
@@ -53,6 +54,74 @@ class ConquestGenerator extends AbstractGenerator {
 	
 	'''
 	
+	def generateEntity(Entity entity, IFileSystemAccess2 fsa) {
+		if(entity.hasInterface == "true") fsa.generateFile("I" + entity.name + ".java", createInterface(entity))
+		fsa.generateFile(entity.name + ".java", createClass(entity))
+	}
+
+	def createClass(Entity entity) '''
+		package «entity.package»
+		
+		«FOR i : entity.imports»
+			import «i»; 
+		«ENDFOR»
+		
+		public class «entity.name»«IF entity.hasInterface == "true"» implements I«entity.name»«ENDIF» {
+			
+			«FOR f : entity.fieldList.fields»
+				private «f.type» «f.name»;
+			«ENDFOR»
+			
+			public «entity.name»(«FOR a : entity.constructor.args SEPARATOR ", "»«a»«ENDFOR») {
+				«FOR b : entity.constructor.body»
+					«b»
+				«ENDFOR»
+			}
+			
+			«FOR f : entity.fieldList.fields»
+				@Override
+				public «f.type» get«f.name.toFirstUpper»() {
+					return this.«f.name»;
+				}
+				
+				@Override
+				public void set«f.name.toFirstUpper»(«f.type» «f.name») {
+					this.«f.name» = «f.name»;
+				}
+				
+			«ENDFOR»
+			
+			«FOR m : entity.methodList.methods»
+				@Override
+				public «m.type» «m.name»(«FOR a : m.args SEPARATOR ", "»«a»«ENDFOR») {
+					«FOR b : m.body»
+						«b»
+					«ENDFOR»
+				}
+				
+			«ENDFOR»
+		}
+	'''
+
+	def createInterface(Entity entity) '''
+		package «entity.package» «««falsch
+		
+		«FOR i : entity.imports»
+			import «i»; 
+		«ENDFOR»
+		
+		public interface I«entity.name» {
+			
+			«FOR f : entity.fieldList.fields»
+				public «f.type» get«f.name.toFirstUpper»();
+				public void set«f.name.toFirstUpper»(«f.type» «f.name»);
+			«ENDFOR»
+			«FOR m : entity.methodList.methods»
+				public «m.type» «m.name»(«FOR a : m.args SEPARATOR ", "»«a»«ENDFOR»);
+			«ENDFOR»
+		}
+	'''
+
 	def createColorUtil(ColorList colorList) '''
 		package de.htwg.conquest.util;
 		
@@ -84,8 +153,8 @@ class ConquestGenerator extends AbstractGenerator {
 						co = "«color.toString.toLowerCase»";
 					}
 				«ENDFOR»
-				 else {
-					co = " ";
+				else {
+				co = " ";
 				}
 				return co;
 			}
@@ -94,4 +163,3 @@ class ConquestGenerator extends AbstractGenerator {
 	
 
 }
-
