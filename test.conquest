@@ -1,0 +1,51 @@
+colors {
+	BLUE
+	GREEN
+	PINK
+	ORANGE
+}
+entities {
+	
+	
+	name "Cell" package "de.htwg.conquest.model.impl" imports {
+		"java.awt.Color"
+		"java.util.Random"
+		"de.htwg.conquest.util.ColorUtil"
+		"de.htwg.conquest.model.ICell"
+		"de.htwg.conquest.model.IPlayer"
+	}
+	hasInterface true
+	contructor
+		args "int num" "int x" "int y"
+		body "Random r = new Random();" "this.color = ColorUtil.getColorSet(num).get(r.nextInt(num));" "this.x = x;"
+			"this.y = y;"
+	fields {
+		name "color" type "Color"
+		name "owner" type "IPlayer"
+		name "x" type "int"
+		name "y" type "int"
+	}
+	methods {
+		name "isOwned" type "boolean" args "" body "return owner != null;"
+		name "getColorText" type "String" args "" body "return ColorUtil.getColorText(color);"
+	}
+	
+	
+	
+	
+	name "Player" package "de.htwg.conquest.model.impl" imports {
+		"java.util.ArrayList"
+		"java.util.List"
+		"de.htwg.conquest.model.ICell"
+		"de.htwg.conquest.model.IPlayer"
+	}
+	hasInterface true
+	contructor args "String name" body "this.name = name;" "this.cells = new ArrayList<>();"
+	fields {
+		name "name" type "String"
+		name "cells" type "List<ICell>"
+	}
+	methods {
+		name "getCellCount" type "int" args "" body "return cells.size();"
+	}
+}
