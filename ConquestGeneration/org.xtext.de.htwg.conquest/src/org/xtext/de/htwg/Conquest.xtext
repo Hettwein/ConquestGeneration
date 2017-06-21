@@ -4,6 +4,7 @@ generate conquest "http://www.xtext.org/de/htwg/Conquest"
 
 Conquest:
 	'colors' colorList = ColorList
+	'classes' classesList = ClassesList
 	'entities' entityList = EntityList
 ;
 	
@@ -52,6 +53,18 @@ ColorList:
 
 enum Color:
 	RED | BLUE | GREEN | YELLOW | MAGENTA | CYAN | ORANGE | PINK
+;
+
+
+ClassesList: 
+	'{' (classes += Class)+ '}'
+;
+
+Class:
+	'className' className = STRING
+	'classPath' classPath = STRING
+	'interfaceName' interfaceName = STRING
+	'interfacePath' interfacePath = STRING
 ;
 
 terminal BOOLEAN:
