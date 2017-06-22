@@ -4,6 +4,13 @@ colors {
 	PINK
 	ORANGE
 }
+
+classes { 
+	className "Controller.class"
+	classPath "de.htwg.conquest.controller.impl.Controller.class"
+	interfaceName "IController.class"
+	interfacePath "de.htwg.conquest.controller.IController"
+}
 entities {
 	
 	
