@@ -13,18 +13,20 @@ EntityList:
 ;
 	
 Entity:
-	'name' name = STRING
+	'entity' name = STRING
+	'{'
 	'package' package = STRING
 	'imports' '{' (imports += STRING)* '}'
 	'hasInterface' hasInterface = BOOLEAN
 	'contructor' constructor = Constructor
 	'fields' fieldList = FieldList
 	'methods' methodList = MethodList
+	'}'
 ;
 
 Constructor:
 	'args' args += STRING*
-	'body' body += STRING+
+	'body' '{' body += STRING+ '}'
 ;	
 
 FieldList:
@@ -32,7 +34,7 @@ FieldList:
 ;
 
 Field:
-	'name' name = STRING
+	'field' name = STRING
 	'type' type = STRING
 ;
 	
@@ -41,10 +43,11 @@ MethodList:
 ;
 	
 Method:
-	'name' name = STRING
+	'method' name = STRING
 	'type' type = STRING
 	'args' args += STRING*
-	'body' body += STRING*
+	'body' '{' body += STRING*
+	'}'
 ;
 	
 ColorList:

@@ -25,14 +25,12 @@ class ConquestGenerator extends AbstractGenerator {
 		val conquest = resource.contents.head as Conquest
 		val colors = createColorUtil(conquest.colorList)
 		val conquestmod = createConquestModule(conquest.classesList)
-		
-		fsa.generateFile("ColorUtil.java", colors)
-		fsa.generateFile("ConquestModule.java", conquestmod)
+		fsa.generateFile("de/htwg/conquest/util/ColorUtil.java", colors)
+		fsa.generateFile("de/htwg/conquest/ConquestModule.java", conquestmod)
 		conquest.entityList.entities.forEach[element | generateEntity(element, fsa)]
 	}
 	
-	def createConquestModule(ClassesList classesList)'''
-	
+	def createConquestModule(ClassesList classesList) '''
 		package de.htwg.conquest;
 		
 		import com.google.inject.AbstractModule;
@@ -41,8 +39,8 @@ class ConquestGenerator extends AbstractGenerator {
 		«FOR Class : classesList.classes SEPARATOR ", "»
 			import «Class.interfacePath»
 		«ENDFOR»
-	
-		pubic class ConquestModule extends AbstractModule {
+		
+		public class ConquestModule extends AbstractModule {
 			
 			@Override
 			protected void configure(){
@@ -51,12 +49,11 @@ class ConquestGenerator extends AbstractGenerator {
 				«ENDFOR»
 			}
 		}
-	
 	'''
 	
 	def generateEntity(Entity entity, IFileSystemAccess2 fsa) {
-		if(entity.hasInterface == "true") fsa.generateFile("I" + entity.name + ".java", createInterface(entity))
-		fsa.generateFile(entity.name + ".java", createClass(entity))
+		if(entity.hasInterface == "true") fsa.generateFile("de/htwg/conquest/model/" + "I" + entity.name + ".java", createInterface(entity))
+		fsa.generateFile("de/htwg/conquest/model/impl/" + entity.name + ".java", createClass(entity))
 	}
 
 	def createClass(Entity entity) '''
@@ -104,10 +101,10 @@ class ConquestGenerator extends AbstractGenerator {
 	'''
 
 	def createInterface(Entity entity) '''
-		package «entity.package» «««falsch
+		package «entity.package.toString().split(".impl").get(0)»
 		
 		«FOR i : entity.imports»
-			import «i»; 
+			import «i»;
 		«ENDFOR»
 		
 		public interface I«entity.name» {

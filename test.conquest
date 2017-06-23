@@ -12,47 +12,86 @@ classes {
 	interfacePath "de.htwg.conquest.controller.IController"
 }
 entities {
-	
-	
-	name "Cell" package "de.htwg.conquest.model.impl" imports {
-		"java.awt.Color"
-		"java.util.Random"
-		"de.htwg.conquest.util.ColorUtil"
-		"de.htwg.conquest.model.ICell"
-		"de.htwg.conquest.model.IPlayer"
+	entity "Cell" {
+		package "de.htwg.conquest.model.impl"
+		imports {
+			"java.awt.Color"
+			"java.util.Random"
+			"de.htwg.conquest.util.ColorUtil"
+			"de.htwg.conquest.model.ICell"
+			"de.htwg.conquest.model.IPlayer"
+		}
+		hasInterface true
+		contructor
+			args "int num" "int x" "int y"
+			body {
+				"Random r = new Random();"
+				"this.color = ColorUtil.getColorSet(num).get(r.nextInt(num));"
+				"this.x = x;"
+				"this.y = y;"
+			}
+		fields {
+			field "color" type "Color"
+			field "owner" type "IPlayer"
+			field "x" type "int"
+			field "y" type "int"
+		}
+		methods {
+			method "isOwned" type "boolean" args "" body {"return owner != null;"}
+			method "getColorText" type "String" args "" body {"return ColorUtil.getColorText(color);"}
+		}
 	}
-	hasInterface true
-	contructor
-		args "int num" "int x" "int y"
-		body "Random r = new Random();" "this.color = ColorUtil.getColorSet(num).get(r.nextInt(num));" "this.x = x;"
-			"this.y = y;"
-	fields {
-		name "color" type "Color"
-		name "owner" type "IPlayer"
-		name "x" type "int"
-		name "y" type "int"
-	}
-	methods {
-		name "isOwned" type "boolean" args "" body "return owner != null;"
-		name "getColorText" type "String" args "" body "return ColorUtil.getColorText(color);"
-	}
 	
-	
-	
-	
-	name "Player" package "de.htwg.conquest.model.impl" imports {
-		"java.util.ArrayList"
-		"java.util.List"
-		"de.htwg.conquest.model.ICell"
-		"de.htwg.conquest.model.IPlayer"
+	entity "Player" {
+		package "de.htwg.conquest.model.impl"
+		imports {
+			"java.util.ArrayList"
+			"java.util.List"
+			"de.htwg.conquest.model.ICell"
+			"de.htwg.conquest.model.IPlayer"
+		}
+		hasInterface true
+		contructor args "String name" body {"this.name = name;" "this.cells = new ArrayList<>();"}
+		fields {
+			field "name" type "String"
+			field "cells" type "List<ICell>"
+		}
+		methods {
+			method "getCellCount" type "int" args "" body {"return cells.size();"}
+		}
 	}
-	hasInterface true
-	contructor args "String name" body "this.name = name;" "this.cells = new ArrayList<>();"
-	fields {
-		name "name" type "String"
-		name "cells" type "List<ICell>"
-	}
-	methods {
-		name "getCellCount" type "int" args "" body "return cells.size();"
+
+	entity "GameField" {
+		package "de.htwg.conquest.model.impl"
+		imports {
+			"java.awt.Color"
+			"de.htwg.conquest.model.IGameField"
+			"de.htwg.conquest.model.ICell"
+			"de.htwg.conquest.model.IPlayer"
+		}
+		hasInterface true
+		contructor args "int size" "int colorNum" body {
+			"this.size = size;"
+			"cells = new Cell[size][size];"
+			"for(int i = 0; i < size; i++) {"
+			"for(int j = 0; j < size; j++) {"
+			"cells[i][j] = new Cell(colorNum, i, j);"
+			"}"
+			"}"
+		}
+		fields {
+			field "size" type "int"
+			field "cells" type "ICell[][]"
+		}
+		methods {
+			method "getCell" type "ICell" args "int x" "int y" body {
+				"if(x < size && y < size && x > -1 && y > -1) {"
+				"return cells[x][y];"
+				"}"
+				"return null;"
+			}
+			method "setCell" type "void" args "int x" "int y" "Color color" body {"cells[x][y].setColor(color);"}
+			method "setOwner" type "void" args "int x" "int y" "IPlayer owner" body {"cells[x][y].setOwner(owner);"}
+		}
 	}
 }
