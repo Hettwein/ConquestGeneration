@@ -37,7 +37,7 @@ class ConquestGenerator extends AbstractGenerator {
 		import com.google.inject.Singleton;
 		
 		«FOR Class : classesList.classes SEPARATOR ", "»
-			import «Class.interfacePath»
+			import «Class.interfacePath»;
 		«ENDFOR»
 		
 		public class ConquestModule extends AbstractModule {
@@ -57,7 +57,7 @@ class ConquestGenerator extends AbstractGenerator {
 	}
 
 	def createClass(Entity entity) '''
-		package «entity.package»
+		package «entity.package»;
 		
 		«FOR i : entity.imports»
 			import «i»; 
@@ -101,7 +101,7 @@ class ConquestGenerator extends AbstractGenerator {
 	'''
 
 	def createInterface(Entity entity) '''
-		package «entity.package.toString().split(".impl").get(0)»
+		package «entity.package.toString().split(".impl").get(0)»;
 		
 		«FOR i : entity.imports»
 			import «i»;
