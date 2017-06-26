@@ -3,6 +3,7 @@ colors {
 	GREEN
 	PINK
 	ORANGE
+	CYAN
 }
 
 classes { 
@@ -41,7 +42,7 @@ entities {
 			method "getColorText" type "String" args "" body {"return ColorUtil.getColorText(color);"}
 		}
 	}
-	
+
 	entity "Player" {
 		package "de.htwg.conquest.model.impl"
 		imports {
@@ -58,6 +59,7 @@ entities {
 		}
 		methods {
 			method "getCellCount" type "int" args "" body {"return cells.size();"}
+			method "addCell" type "void" args "ICell cell" body {"this.cells.add(cell);"}
 		}
 	}
 

@@ -1,2 +1,0 @@
-test spieler Spieler1 hat 1 Feld(er)
-test spieler Spieler2 hat 1 Feld(er)
